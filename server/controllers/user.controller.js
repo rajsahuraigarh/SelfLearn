@@ -106,77 +106,44 @@ export const registerUser = asyncHandler(async (req, res, next) => {
  * @LOGIN
  * @ROUTE @POST {{URL}}/api/v1/user/login
  * @ACCESS Public
- */
-export const loginUser = asyncHandler(async (req, res, next) => {
-  // Destructuring the necessary data from req object
-  const { email, password } = req.body;
+ */export const loginUser = asyncHandler(async (req, res, next) => {
+  try {
+    // Destructuring the necessary data from req object
+    const { email, password } = req.body;
 
-  // Check if the data is there or not, if not throw error message
-  if (!email || !password) {
-    return next(new AppError('Email and Password are required', 400));
+    // Check if the data is there or not, if not throw an error message
+    if (!email || !password) {
+      return next(new AppError('Email and Password are required', 400));
+    }
+
+    // Finding the user with the sent email
+    const user = await User.findOne({ email }).select('+password');
+
+    // If no user or sent password does not match, then send a generic response
+    if (!(user && (await user.comparePassword(password)))) {
+      return next(
+        new AppError('Email or Password do not match or user does not exist', 401)
+      );
+    }
+
+    // Generating a JWT token
+    const token = await user.generateJWTToken();
+
+    // Setting the password to undefined so it does not get sent in the response
+    user.password = undefined;
+
+    // Setting the token in the cookie with the name 'token' along with cookieOptions
+    res.cookie('token', token, cookieOptions);
+
+    // If all is good, send the response to the frontend
+    res.status(200).json({
+      success: true,
+      message: 'User logged in successfully',
+      user,
+    });
+  } catch (e) {
+    return next(new AppError(e.message, 500));
   }
-
-  // Finding the user with the sent email
-  const user = await User.findOne({ email }).select('+password');
-
-  // If no user or sent password do not match then send generic response
-  if (!(user && (await user.comparePassword(password)))) {
-    return next(
-      new AppError('Email or Password do not match or user does not exist', 401)
-    );
-  }
-
-  // Generating a JWT token
-  const token = await user.generateJWTToken();
-
-  // Setting the password to undefined so it does not get sent in the response
-  user.password = undefined;
-
-  // Setting the token in the cookie with name token along with cookieOptions
-  res.cookie('token', token, cookieOptions);
-
-  // If all good send the response to the frontend
-  res.status(200).json({
-    success: true,
-    message: 'User logged in successfully',
-    user,
-  });
-});
-
-/**
- * @LOGOUT
- * @ROUTE @POST {{URL}}/api/v1/user/logout
- * @ACCESS Public
- */
-export const logoutUser = asyncHandler(async (_req, res, _next) => {
-  // Setting the cookie value to null
-  res.cookie('token', null, {
-    secure: process.env.NODE_ENV === 'production' ? true : false,
-    maxAge: 0,
-    httpOnly: true,
-  });
-
-  // Sending the response
-  res.status(200).json({
-    success: true,
-    message: 'User logged out successfully',
-  });
-});
-
-/**
- * @LOGGED_IN_USER_DETAILS
- * @ROUTE @GET {{URL}}/api/v1/user/me
- * @ACCESS Private(Logged in users only)
- */
-export const getLoggedInUserDetails = asyncHandler(async (req, res, _next) => {
-  // Finding the user using the id from modified req object
-  const user = await User.findById(req.user.id);
-
-  res.status(200).json({
-    success: true,
-    message: 'User details',
-    user,
-  });
 });
 
 /**

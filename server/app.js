@@ -32,7 +32,7 @@ app.get('/ping', (_req, res) => {
 // import courseRoutes from './routes/course.routes.js';
 // import miscRoutes from './routes/miscellaneous.routes.js';
 
-// app.use('/api/v1/user', userRoutes);
+ app.use('/api/v1/user', userRoutes);
 // app.use('/api/v1/courses', courseRoutes);
 // app.use('/api/v1', miscRoutes);
 
@@ -42,7 +42,7 @@ app.all('*', (_req, res) => {
 });
 
 // Custom error handling middleware
-// app.use(errorMiddleware);
+ app.use(errorMiddleware);
 
 
 export default app;
