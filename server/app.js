@@ -4,15 +4,15 @@ import express from 'express';
  config();
 import cors from 'cors';
 import userRoutes from './routes/user.routes.js'
-// import morgan from 'morgan';
-// import errorMiddleware from './middlewares/error.middleware.js';
+import morgan from 'morgan';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 const app = express();
 
 // Middlewares
 // Built-In
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 // // Third-Party
 app.use(cors({
     origin: [process.env.FRONTEND_URL],
@@ -29,12 +29,12 @@ app.get('/ping', (_req, res) => {
 
 // // Import all routes
  import userRoutes from './routes/user.routes.js';
-// import courseRoutes from './routes/course.routes.js';
-// import miscRoutes from './routes/miscellaneous.routes.js';
+import courseRoutes from './routes/course.routes.js';
+import miscRoutes from './routes/miscellaneous.routes.js';
 
  app.use('/api/v1/user', userRoutes);
-// app.use('/api/v1/courses', courseRoutes);
-// app.use('/api/v1', miscRoutes);
+app.use('/api/v1/courses', courseRoutes);
+app.use('/api/v1', miscRoutes);
 
 // Default catch all route - 404
 app.all('*', (_req, res) => {
