@@ -13,7 +13,7 @@ const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   httpOnly: true,
 };
-
+//###################################################################################//
 /**
  * @REGISTER
  * @ROUTE @POST {{URL}}/api/v1/user/register
@@ -101,12 +101,13 @@ export const registerUser = asyncHandler(async (req, res, next) => {
     user,
   });
 });
-
+//###################################################################################//
 /**
  * @LOGIN
  * @ROUTE @POST {{URL}}/api/v1/user/login
  * @ACCESS Public
- */export const loginUser = asyncHandler(async (req, res, next) => {
+ */
+  export const loginUser = asyncHandler(async (req, res, next) => {
   try {
     // Destructuring the necessary data from req object
     const { email, password } = req.body;
@@ -146,6 +147,34 @@ export const registerUser = asyncHandler(async (req, res, next) => {
   }
 });
 
+export const logoutUser=(req, res)=>{
+  res.cookie('token', null,{
+    secure:true,
+    maxAge: 0,
+    httpOnly:true
+  });
+
+  res.status(200).json({
+    success:true, 
+    message:'User Logged out sucessfully'
+  })
+};
+
+export  const getLoggedInUserDetails =async(req,res)=>{
+  try{
+    const userId=req.user.id;
+    const user=await User.findById(userId);
+
+    res.status(200).json({
+      success:true,
+      message:'User detials',
+      user
+    });
+  } catch(e){
+    return next(new AppError('Failed to fetch Profile'))
+  }
+}
+//###################################################################################//
 /**
  * @FORGOT_PASSWORD
  * @ROUTE @POST {{URL}}/api/v1/user/reset
@@ -212,7 +241,7 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
     );
   }
 });
-
+//###################################################################################//
 /**
  * @RESET_PASSWORD
  * @ROUTE @POST {{URL}}/api/v1/user/reset/:resetToken
