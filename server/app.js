@@ -3,7 +3,6 @@ import express from 'express';
  import { config } from 'dotenv';
  config();
 import cors from 'cors';
-import userRoutes from './routes/user.routes.js'
 import morgan from 'morgan';
 import errorMiddleware from './middlewares/error.middleware.js';
 
