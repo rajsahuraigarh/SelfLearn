@@ -12,8 +12,7 @@ mongoose.set("strictQuery", false);
 const connectToDB = async () => {
   try {
     const { connection } = await mongoose.connect(
-      process.env.MONGO_URI || `mongodb+srv://twiz0949:Rajsahu123@selflearnuser.f1mdamh.mongodb.net/?retryWrites=true&w=majority`
-    );
+      process.env.MONGO_URI || `mongodb://twiz0949:raj123@ac-dmbufx1-shard-00-00.f1mdamh.mongodb.net:27017,ac-dmbufx1-shard-00-01.f1mdamh.mongodb.net:27017,ac-dmbufx1-shard-00-02.f1mdamh.mongodb.net:27017/?ssl=true&replicaSet=atlas-64gr1x-shard-0&authSource=admin&retryWrites=true&w=majority`)
 
     if (connection) {
       console.log(`Connected to MongoDB: ${connection.host}`);

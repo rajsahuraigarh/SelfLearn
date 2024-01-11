@@ -1,22 +1,27 @@
 export const QuizData = [
     {
-        question: "Which language runs in a web browser?",
-        options:[ "Java", "C", "Python", "JavaScript"],
-        answer: 4
-    },
-    {
-        question: "What does CSS stand for?",
-        options:["Central Style Sheets", "Cascading Style Sheets", "Cascading Simple Sheets", "Cars SUVs Sailboats"],
+        question: "  Have you learn about coding in school life ?",
+        options:[ "Yes , basic of HTML CSS ", "Yes , other Programing Language "," NO" ],
         answer: 2
     },
     {
-        question: "What does HTML stand for?",
-        options: ["Hypertext Markup Language", "Hypertext Markdown Language", "Hyperloop Machine Language", "Helicopters Terminals Motorboats Lamborginis"],
+        question: "What attract you most in any web/app?",
+        options:["Design", "Features","Graphics"],
+        answer: 2 
+    },
+    {
+        question: " Do you like to work in a Team ?",
+        options: ["NO", "Yes with known Person" ,"yes"],
         answer: 1
     },
     {
-        question: "What year was JavaScript launched?",
-        options: ["1996", "1995", "1994", "none of the above"],
+        question: "Do you like to solve the real life problem",
+        options: ["NO",  "Yes" , "50% - 50%"],
+        answer:2
+    },
+    {
+        question: "Are you able to grab technology quickly",
+        options: ["Yes very fast",  "Intermediate" , "NO slowly"],
         answer:2
     },
 ];
